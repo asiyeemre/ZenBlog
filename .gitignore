@@ -1,0 +1,12 @@
+## Klasörler
+[Bb]in/
+[Oo]bj/
+
+## Visual Studio dosyaları
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+
+## Diğer
+.DS_Store

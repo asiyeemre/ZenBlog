@@ -1,0 +1,23 @@
+﻿using MediatR;
+using ZenBlog.Application.Base;
+using ZenBlog.Application.Contracts.Persistence;
+using ZenBlog.Application.Features.ContactInfos.Commands;
+using ZenBlog.Domain.Entities;
+
+namespace ZenBlog.Application.Features.ContactInfos.Handlers;
+
+public class RemoveContactInfoCommandHandler(IRepository<ContactInfo> repository, IUnitOfWork unitOfWork) : IRequestHandler<RemoveContactInfoCommand, BaseResult<object>>
+{
+    public async  Task<BaseResult<object>> Handle(RemoveContactInfoCommand request, CancellationToken cancellationToken)
+    {
+        var contactInfo = await repository.GetByIdAsync(request.Id);
+        if (contactInfo == null)
+        {
+            return BaseResult<object>.NotFound("Id bulunamadı");
+        }
+
+        repository.Delete(contactInfo);
+        await unitOfWork.SaveChangesAsync();
+        return BaseResult<object>.Success("İletişim bilgisi silindi");
+    }
+}
